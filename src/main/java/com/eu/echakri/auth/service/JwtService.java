@@ -1,7 +1,7 @@
-package com.eu.echakri.service;
+package com.eu.echakri.auth.service;
 
-import com.eu.echakri.model.User;
-import com.eu.echakri.repository.TokenRepository;
+import com.eu.echakri.auth.entity.User;
+import com.eu.echakri.auth.repository.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

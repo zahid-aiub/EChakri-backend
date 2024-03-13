@@ -1,4 +1,4 @@
-package com.eu.echakri.model.enums;
+package com.eu.echakri.auth.entity.enums;
 
 public enum Role {
     USER,

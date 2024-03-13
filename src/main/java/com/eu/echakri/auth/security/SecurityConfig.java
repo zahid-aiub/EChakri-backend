@@ -1,7 +1,8 @@
-package com.eu.echakri.config;
+package com.eu.echakri.auth.security;
 
-import com.eu.echakri.filter.JwtAuthenticationFilter;
-import com.eu.echakri.service.UserDetailsServiceImp;
+import com.eu.echakri.auth.handler.UserLogoutHandler;
+import com.eu.echakri.auth.filter.JwtAuthenticationFilter;
+import com.eu.echakri.auth.service.AuthUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -22,16 +23,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserDetailsServiceImp userDetailsServiceImp;
+    private final AuthUserDetailsService authUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final CustomLogoutHandler logoutHandler;
+    private final UserLogoutHandler logoutHandler;
 
     public SecurityConfig(
-            UserDetailsServiceImp userDetailsServiceImp,
+            AuthUserDetailsService authUserDetailsService,
             JwtAuthenticationFilter jwtAuthenticationFilter,
-            CustomLogoutHandler logoutHandler
+            UserLogoutHandler logoutHandler
     ) {
-        this.userDetailsServiceImp = userDetailsServiceImp;
+        this.authUserDetailsService = authUserDetailsService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.logoutHandler = logoutHandler;
     }
@@ -47,7 +48,7 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                 .anyRequest()
                                 .authenticated()
-                ).userDetailsService(userDetailsServiceImp)
+                ).userDetailsService(authUserDetailsService)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

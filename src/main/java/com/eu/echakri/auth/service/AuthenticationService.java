@@ -1,12 +1,13 @@
-package com.eu.echakri.service;
+package com.eu.echakri.auth.service;
 
-import com.eu.echakri.request.AuthenticationRequest;
-import com.eu.echakri.response.AuthenticationResponse;
-import com.eu.echakri.model.Token;
-import com.eu.echakri.model.User;
-import com.eu.echakri.repository.TokenRepository;
-import com.eu.echakri.repository.UserRepository;
-import com.eu.echakri.response.RegistrationResponse;
+import com.eu.echakri.auth.dto.request.AuthenticationRequest;
+import com.eu.echakri.auth.dto.request.RegistrationRequest;
+import com.eu.echakri.auth.dto.response.AuthenticationResponse;
+import com.eu.echakri.auth.entity.Token;
+import com.eu.echakri.auth.entity.User;
+import com.eu.echakri.auth.repository.TokenRepository;
+import com.eu.echakri.auth.repository.UserRepository;
+import com.eu.echakri.auth.dto.response.RegistrationResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,29 +38,21 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public RegistrationResponse register(User request) {
+    public RegistrationResponse register(RegistrationRequest request) {
 
-        // check if user already exist. if exist than authenticate the user
-        if (repository.findByUsername(request.getUsername()).isPresent()) {
+        if (repository.findByUsername(request.username()).isPresent()) {
             return new RegistrationResponse(403, "User already exist");
         }
 
         User user = new User();
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-
-        user.setRole(request.getRole());
+        user.setFirstName(request.firstName());
+        user.setLastName(request.lastName());
+        user.setEmail(request.email());
+        user.setUsername(request.username());
+        user.setPassword(passwordEncoder.encode(request.password()));
+        user.setRole(request.role());
 
         this.repository.save(user);
-
-        // Todo: have to think
-//        String jwt = jwtService.generateToken(user);
-//        saveUserToken(jwt, user);
-
         return new RegistrationResponse(200, "User registration successful");
 
     }
@@ -67,12 +60,12 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
+                        request.username(),
+                        request.password()
                 )
         );
 
-        User user = repository.findByUsername(request.getUsername()).orElseThrow();
+        User user = repository.findByUsername(request.username()).orElseThrow();
         String jwt = jwtService.generateToken(user);
 
         revokeAllTokenByUser(user);
@@ -88,9 +81,7 @@ public class AuthenticationService {
             return;
         }
 
-        validTokens.forEach(t -> {
-            t.setLoggedOut(true);
-        });
+        validTokens.forEach(t -> t.setLoggedOut(true));
 
         tokenRepository.saveAll(validTokens);
     }

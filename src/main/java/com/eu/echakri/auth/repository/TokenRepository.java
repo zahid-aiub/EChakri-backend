@@ -1,6 +1,6 @@
-package com.eu.echakri.repository;
+package com.eu.echakri.auth.repository;
 
-import com.eu.echakri.model.Token;
+import com.eu.echakri.auth.entity.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

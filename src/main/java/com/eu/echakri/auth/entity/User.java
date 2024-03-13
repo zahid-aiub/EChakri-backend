@@ -1,6 +1,6 @@
-package com.eu.echakri.model;
+package com.eu.echakri.auth.entity;
 
-import com.eu.echakri.model.enums.Role;
+import com.eu.echakri.auth.entity.enums.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,4 +1,4 @@
-package com.eu.echakri.response;
+package com.eu.echakri.auth.dto.response;
 
 public class AuthenticationResponse {
     private String token;

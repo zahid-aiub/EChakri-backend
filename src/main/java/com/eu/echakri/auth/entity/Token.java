@@ -1,4 +1,4 @@
-package com.eu.echakri.model;
+package com.eu.echakri.auth.entity;
 
 
 import jakarta.persistence.*;

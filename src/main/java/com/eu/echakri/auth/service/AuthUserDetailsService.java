@@ -1,17 +1,17 @@
-package com.eu.echakri.service;
+package com.eu.echakri.auth.service;
 
-import com.eu.echakri.repository.UserRepository;
+import com.eu.echakri.auth.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailsServiceImp implements UserDetailsService {
+public class AuthUserDetailsService implements UserDetailsService {
 
     private final UserRepository repository;
 
-    public UserDetailsServiceImp(UserRepository repository) {
+    public AuthUserDetailsService(UserRepository repository) {
         this.repository = repository;
     }
 

@@ -1,4 +1,4 @@
-package com.eu.echakri.response;
+package com.eu.echakri.auth.dto.response;
 
 public class RegistrationResponse {
     private final int code;
